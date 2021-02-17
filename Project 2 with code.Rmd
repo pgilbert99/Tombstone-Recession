@@ -1,0 +1,476 @@
+---
+title: <center> Tombstone Recessions Related to Atmospheric Sulfur Dioxide Concentrations \center
+author: "Paul Gilbert"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+   rmdformats::readthedown:
+    self_contained: true
+    lightbox: true
+    gallery: true
+    fig_caption: true
+   
+---
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<center>
+
+
+
+![](giphy.gif){ width=50% }
+
+<br>
+
+<h3>By Paul Gilbert</h3>
+
+![](me.jpg){ width=15% }
+
+<br><br>
+
+## Abstract
+
+<p style="text-align:left;">
+Tombstone recession is a large problem in marble tombstones and has resulted in the loss of the final marker of the deceased. Thomas Meierding (1993) and his associates relate this recession with atmospheric $SO_2$ concentrations from the burning of fossil fuels (mostly coals). The relationship between average $SO_2$ concentrations per 100 years and recession rate per 100 years is one of simple linear regression. 
+</p>
+
+<br>
+
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+
+
+
+
+<br><br>
+
+##  Introduction 
+
+<p style="text-align:left;">
+Without taking too deep of a dive into the geologic sciences, a brief discussion on some characteristics of tombstones prior to the modern era is necessary. For generations, human beings have been using marble tombstones as markers to signify the resting places of our deceased. In modern times, we have transitioned to more durable rock types with less solubility, as we will discuss.
+</p>
+
+<br>
+
+
+
+
+### Carbonate Rocks
+  
+  <p style="text-align:left;">
+     Limestone belongs to a class of rock type called carbonates. Carbonates are derived from organic matter. All carbonates are highly soluble, hence why many caverns are formed in limestone rock. Under immense heat and pressure, rocks undergo metamorphism. This changes the crystal properties of the rock and makes it more dense and compacted. Marble is the metamorphosed form of limestone. It is harder and denser but it still remains soluble, especially in the presence of acids. Nowadays, the ease with which carbonates dissolve is well known. With this knowledge, we have transitioned to more durable stone such as granite, schist, etc., to mark our deceased. 
+</p>
+
+<br>
+
+
+![Marble Rock Face (Wikipedia)](marbel.jpg){ width=80% }
+
+
+<br>
+
+
+###  $SO_2$ Weathering
+<p style="text-align:left;">
+Sulphur dioxide ($SO_2$) is a chemical compound that is released into the atmosphere from the burning of coal. This compound conjoins with meteroic water to form acid rain, playing a big part in tombstone dissolution. However, from Meierdings' study, it is surmised that the direct reaction of $SO_2$ with the calcite ($CaCO_3$) minerals within the marble is responsible for most of the weathering. This reaction drives the production of $CaSO_4$, and in the presence of water vapor it produces $CaSO_4-H_2O$, a sulphate mineral called gypsum. Gypsum takes up 38% more volume than $CaCO_3$ so that when it crystallizes in the pore space of the statue it induces granular breakage and loss. For this reason, regions with higher $SO_2$ atmospheric concentrations will experience higher weathering rates in carbonate materials. 
+</p>
+
+<br>
+
+
+![Tombstone Recession (Meierding, 1993)](recess.PNG){ width=40% }
+
+
+<br><br>
+
+
+## The Data
+
+<p style="text-align:left;">
+Thomas Meierding and his associates collected data from 8,438 tombstones in 320 cemetaries across the United States and published their data in 1993. For this particular research project I will be using the dataset he collected of mean $SO_2$ concentrations per 100 years vs. mean recession rates per 100 years. This is a sample size of 21. Sampling techniques for collecting the data included measurements of the bottom-center portion of the stone (the least weathered surface on tombstones), and measurements of the stone above 50 cm off the ground (where weathering rates are at a maximum). The difference in these two measurements is calculated by subtraction and the result is divided by two to give the rate of weathering above 50 cm height. This result is then divided by the age of the stone exposure to standardize exposure times. The final product is expressed in mm/100 years. 
+The data was gathered to see what were significant reasons behind rapid tombstone weathering. Aside from the data inside of this project, Meierding showed graphs and data of recession rates compared to location, climate and  distance from ore smelters.
+</p>
+
+```{r}
+tb1=read.csv("tombstone.csv")
+tb=read.csv("tombstone2.csv")
+re=tb1$Recession
+so=tb1$SO2
+library(DT)
+datatable(tb1)
+```
+
+<br><br>
+
+### My Interest in the data
+
+<p style="text-align:left;">
+As a geology major, my interest in geologic reasons behind various processes is higher than most. The relationship between carbonates and dissolution is a very large geologic topic. This creates a wide range of problems outside of tombstones including sinkhole formation, road degradation, $CaCO_3$ buildup inside of pipes, etc. Also, tombstones mark something of immense value, whether the people underneath of them are remembered by anyone or not. They signify a life lived, however long or brief, and whatever we can do to ensure some memory of them lasts seems worthwhile to me. 
+</p>
+
+<br>
+
+### The problem to be solved
+
+<p style="text-align:left;">
+We want to discover the relationship of $SO_2$ concentration vs. the average recession rates of the marble tombstones within those regions. If we see a linear relationship we may surmise that recession is closely intertwined with $SO_2$ emmisions. 
+</p>
+
+```{r}
+library (s20x)
+library(ggplot2)
+g=ggplot(tb, aes(x=so,y=re,colour=re, xlabel="$SO_2$"))+ labs(x = "Mean SO2 (ug/m^3) over 100 years", y="Recession (mm/100 years)", colour="Recession")+scale_color_gradient()+theme_bw()
+g=g+geom_point(cex=3, shape=18) + geom_line()+ geom_smooth(method="lm")
+g+ggtitle("Sulfur Dioxide Mean Vs Tombstone Recession")
+```
+
+<p style="text-align:left;">
+Viewing this preliminary data we can see that there does seem to be a linear type relationship beteen $SO_2$ concentrations and recession rates over 100 year periods. A further look at the mathematical relationship will validate this possibility.
+</p>
+
+<br><br><br>
+
+
+
+## Simple Linear Regression Theory
+
+
+<p style="text-align:left;">
+
+It seems likely that as the mean concentration of $SO_2$ increases, so too does the rate of weathering per 100 year period. To observe if this is indeed the case, I will create an SLR model which will serve as the basis for identifying variable dependency. In this model my independent variable (y) will be the mean $SO_2$ concentrations over a 100 year period and my dependent variable (x) will be the rate of recession per 100 years, given in millimeters.
+A simple linear regression model uses the equation $$y=\beta_0 +
+\beta_1x+\epsilon$$
+Using this equation we can graph a regression line. Where $\beta_0$ is the y-intercept, $\beta_1$ is the line slope and $\epsilon$ is the random error component. 
+The mean of y is $\beta_0+\beta_1x$ as derived by:
+$$E(y)=E(\beta_0 +
+\beta_1x+\epsilon)$$
+$$=\beta_0 +\beta_1x+E(\epsilon)$$
+$$=\beta_0 +\beta_1x$$
+This is because we assume that $E(\epsilon)=0$
+Using specific assuptions about $\epsilon$ as laid out by Mendenhall and Sincich (2016), we will estimate the parameters $\beta_0$ and $\beta_1$. To do this we will use the method of least squares as outlined by Mendenhall and Sincich (2016). 
+</p>
+
+<br><br><br>
+
+
+
+## Method of Least Squares
+
+<p style="text-align:left;">
+
+The method of least squares allows us to use an equation that gives us a line that has a smaller sum of squares than any other straight line model. Originally, our equation for a straight line model is $$y=\beta_0 +
+\beta_1x+\epsilon$$ Our estimators will not include $\epsilon$. So it will be equal to $$\hat{y}=\hat{\beta}_0 +
+\hat{\beta}_1x $$ The deviation of the ith value from y is called a residual and is defined by: $$(y_i-\hat{y}_i)=[y_i-(\hat{\beta}_0+\hat{\beta}_1x_i)]$$ So using the least squares method, this brings us to our line equation that uses $\hat{\beta}_0 \quad and \quad \hat{\beta}_1$ to minimize the equation:  $$SSE=\sum_{i=1}^n[y_i-(\hat{\beta}_0+\hat{\beta}_1x_i)]^2$$
+</p>
+
+<br><br>
+
+### Estimators of $\beta_0$ and $\beta_1$
+```{r}
+tb.lm=with(tb, lm(re~so))
+print(coef(tb.lm))
+```
+
+Using this information we can see that $$\hat{\beta}_0=0.322996$$ $$\hat{\beta}_1=0.008593$$
+
+<br><br>
+
+### 95% Confidence Interval of Estimates
+
+```{r}
+ciReg(tb.lm, conf.level=0.95, print.out=TRUE)
+```
+
+<p style="text-align:left;">
+
+Our confidence interval for $\hat{\beta}_0$ is [0.00445, 0.64155]. Our initial estimate is 0.322996 so we can see that the estimate lies in this 95% confidence interval.
+
+Our confidence interval for $\hat{\beta}_1$ is [0.00661, 0.01058]. Our initial estimate is 0.0.008593, so we can see that the estimate lies in this 95% confidence interval.
+</p>
+
+<br><br>
+
+### Least Squares Estimate
+
+<p style="text-align:left;">
+
+Using our intitial estimate equation $\hat{y}=\hat{\beta}_0+\hat{\beta}_1x_i$ with our estimators we get: $$\hat{y}=\hat{\beta}_0 +
+\hat{\beta}_1x_i=0.322996 + 0.008593x_i$$. This shows us that for every +1 increase in $SO_2$ mean concentration over a 100 year period, we get an increase of 0.008593 mm of recession. Or more simply stated, for every +100 increase of mean $SO_2$ concentration over a 100 year period we get an increase of 0.8593 mm of recession. 
+</p>
+
+<br><br><br>
+
+
+## Checks on Validity
+
+
+<p style="text-align:left;">
+
+To check the validity of our model, we will take a look at various plots and numerical values to see if our data is linear and logical and to check for outliers.
+</p>
+
+```{r}
+a=plot(re~so,pch=18, cex=1.5,ylim=c(0,1.1*max(re)),xlim=c(0,1.1*max(so)), xlab="Mean SO2 (ug/m^3) over 100 years", ylab="Recession (mm/100 years)",
+main = "Scatterplot with Fitted Line of Mean SO2 and Recession")
+abline(tb.lm, col="green4")
+```
+
+There does indeed seem to be a clear linear relationship between $SO_2$ concentrations and tombstone recessions.
+
+<br><br>
+
+### Normality of Error Distribution
+
+```{r}
+normcheck(tb.lm, shapiro.wilk = TRUE)
+```
+
+<p style="text-align:left;">
+
+I have used a Shapiro-Wilk test to test for normality. It can be observed that the error distribution appears to be normal. When we look at the p-value of the error distribution it is 0.828. This very high p-value is much greater than our alpha value of 0.05. With a null hypothesis of normal distribution, we will accept this due to the high p-value. Therefore we will say that error is distributed normally.$$\epsilon \sim N(0,\sigma^2)$$
+</p>
+
+<br><br>
+
+## Data Analysis
+
+<br>
+
+### Residual Data
+
+```{r}
+p1=ggplot(tb.lm, aes(.fitted, .resid))+geom_point()
+p1=p1+stat_smooth(method="loess")+geom_hline(yintercept=0, col="red", linetype="dashed")
+p1=p1+xlab("Fitted values")+ylab("Residuals")
+p1=p1+ggtitle("Residual vs Fitted Plot")+theme_bw()
+p1
+```
+
+<p style="text-align:left;">
+
+Using a residual vs fitted plot we can see a uniformity about 0 of the residuals. This information tells us that there is no non-uniform and significant deviation from the fitted line from the model.
+</p>
+
+<br><br>
+
+```{r}
+yhat=with(tb,predict(tb.lm,data.frame(re)))
+tb$predicted <- predict(tb.lm)   
+tb$residuals <- residuals(tb.lm) 
+tb[,"label"] <- NA
+tb[tb$residuals > 0.6, "label"] <- "Residual Outliers"
+tb[tb$residuals <= 0.6, "label"] <- "Normal Residuals"
+tb[tb$residuals < -0.6, "label"] <- "Residual Outliers"
+c <- ggplot(tb, aes(x=0, y=tb$residuals))
+c + geom_boxplot(outlier.shape = NA, fill="lightgreen") + geom_jitter(shape=16, position=position_jitter(0.1), aes(colour=label)) + labs(title="Boxplot of Residuals",x="", y = "Residuals") + scale_x_discrete(limits=c("0", "1"))
+```
+
+Here we can see how many outlier residuals we actually have.
+
+<br><br>
+
+```{r}
+ggplot(tb, aes(x = so, y = re)) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgrey") +     
+  geom_segment(aes(xend = so, yend = predicted), alpha = .2) +      
+  geom_point(aes(color = abs(residuals), size = abs(residuals))) +  
+  scale_color_continuous(low = "green", high = "red") +          
+  guides(size = FALSE) +                             
+  geom_point(aes(y = predicted), shape = 1) +
+  theme_bw()+
+  labs(title="Residual Deviation Plot",x="Mean SO2 (ug/m^3) over 100 years", y = "Recession (mm/100 years)")
+```
+
+<p style="text-align:left;">
+
+This graph gives us a visual representation of the data residuals about the fitted line. We are able to see specific datapoints in which there are high residual distances. This information gives us the RSS (residual sum of squares), the predicted deviations from the fitted line.
+</p>
+
+#### RSS Calculation
+
+```{r}
+RSS=with(tb,sum((re-yhat)^2))
+RSS
+```
+
+
+<br>
+
+### Plot of Means
+
+
+```{r}
+plot(re~so,bg="Blue",pch=21,ylim=c(0,1.1*max(re)),xlim=c(0,1.1*max(so)), xlab="Mean SO2 (ug/m^3) over 100 years", ylab = "Recession (mm/100 years)")
+with(tb, segments(so,mean(re),so,yhat,col="Red",  mtext("Mean of Recession and Fitted Line Deviation Plot")))
+abline(tb.lm)
+abline(h=mean(re))
+```
+
+<p style="text-align:left;">
+
+From this graph we can visually see that we are graphing the difference between the mean $SO_2$ concentration and the fitted line at specific data points. This will provide us with the model sum of squares (MSS). 
+</p>
+
+#### MSS Calculation
+
+```{r}
+MSS=with(tb,sum((yhat-mean(re))^2))
+MSS
+```
+
+
+<br>
+
+### Means with Total Devaitions 
+
+```{r}
+plot(re~so,bg="Blue",pch=21,ylim=c(0,1.1*max(re)),xlim=c(0,1.1*max(so)), xlab="Mean SO2 (ug/m^3) over 100 years", ylab = "Recession (mm/100 years)")
+abline(h=mean(re))
+segments(so,re,so,mean(re),col="Green", mtext("Means and Total Deviations Plot"))
+```
+
+<p style="text-align:left;">
+
+From this graph we can see a visual representaion of total deviation from the mean recession amount. This gives us an idea about distance from the mean line in relation to mean $SO_2$ concentrations. This provides us with the total sum of squares (TSS).
+</p>
+
+#### TSS Calculation
+
+```{r}
+TSS=with(tb,sum((re-mean(re))^2))
+TSS
+```
+
+<br>
+
+### $R^2$ Calculation
+
+<p style="text-align:left;">
+
+$R^2$ is calcualted with MSS/TSS. This gives us an idea of how well the data conforms to the fitted line of the model. A, $R^2$ value of 1 means that all of the data falls perfectly onto the fitted line. An $R^2$ value close to one means that the data follows a well developed linear trend.
+</p>
+
+```{r}
+MSS/TSS
+```
+
+Our $R^2$ value is 0.8116, showing a well developed linear trend.
+
+<br>
+
+## Cooks Distance Analysis
+
+<p style="text-align:left;">
+
+Cooks distance is used to find points that are influencial on the fitted reggression line. For example, a point that lies quite far from the fitted line would have a large impact on the model compared to other observations that are in close proximity to the fitted data line.
+</p>
+
+```{r}
+p4=ggplot(tb.lm, aes(seq_along(.cooksd), .cooksd),label = TRUE)+geom_bar(stat="identity", position="identity")
+p4=p4+xlab("Obs. Number")+ylab("Cook's distance")
+p4=p4+ggtitle("Cook's distance")+theme_bw()
+p4
+```
+
+<p style="text-align:left;">
+
+The cooks distance for our linear model tells us that points 7, 16 and 18 have a large influence on the model as a whole and if they were removed the data would be much closer to the fitted regression line. The distance of these points from the mean value set indicates that they are outliers. We will go ahead and only remove the highest value that is the 18th data point. This should fit our model better and raise our $R^2$ value.
+</p>
+
+
+<br><br>
+
+## Model Comparison
+
+<br>
+
+### Summary of Dataset without 18th Data Point
+```{r}
+tb2=tb[-18,]
+ree=tb2$Recession
+soo=tb2$SO2
+tb2.lm=lm(ree~soo, data=tb2)
+summary(tb2.lm)
+```
+
+<br>
+
+### Summary of Original Dataset
+
+```{r}
+summary(tb.lm, data=tb)
+coef(tb.lm)
+```
+
+<p style="text-align:left;">
+
+Comparing these two datasets we can see that with the large outlier removed our  Multiple $R^2$ values rises from 0.8116 to 0.8553 and our residual standard error is reduced from 0.365 to 0.3284. This indicates that the model without the large outlier may be a better fit to the data. However, the adjusted $R^2$ value is lower in the first model. This suggests that the first model may actually be more indicative of the true regression than the new model.
+</p>
+
+<br>
+
+### Model Predictions
+
+<p style="text-align:left;">
+
+The creation of these models gives us a very powerful tool to predict likely conditions in the future. We will predict what the amount of recession will be in tombstones over a 100 year period with mean $SO_2$ concentrations at 150, 250, and 500 (ug/m^3). 
+</p>
+
+```{r}
+recession = predict(tb.lm, data.frame(so=c(150,250,500)))
+recession
+```
+
+With $SO_2$ concentrations of 50, 250, and 500 (ug/m^3) per 100 years we should see 1.612, 2.471, and 4.620 mm recessions, respectively.
+
+<br><br>
+
+## Conclusion
+
+<p style="text-align:left;">
+
+In conclusion, there does seem to be a direct linear relationship between $SO_2$ concentrations and rate of recession. $SO_2$ concentrations in the atmosphere are put in place through many processes, but especially the burning of coal. As these concentrations increase over periods of time, the loss of marble tombstones through weathering will be quite large. It only takes a very small amount of recession to make a tombstone illegible. When that happens, a person is truely gone and forgotten. 
+The burning of coal and fossil fuels is a necessity though, if we value energy and electricity, at least for the near future. However, as has already begun in the modern era, the transition from marble tombstones to harder and more durable rock types is necessary to preserve the names and legacies of the deceased. 
+</p>
+
+## References 
+
+<p style="text-align:left;">
+
+Meierding, T. C. (1993). Marble Tombstone Weathering and Air Pollution in North America. Annals of the Association of American Geographers, 83(4), 568–588. doi: 10.1111/j.1467-8306.1993.tb01954.x
+
+Mendenhall, William M., and Terry L. Sincich. 2016. Simple Linear Regression. 6th ed. Florida, USA: Taylor & Francis Group, LLC.
+</p>
+
+
+<br><br><br>
+
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+![](images.jfif){ width=5% }
+  
